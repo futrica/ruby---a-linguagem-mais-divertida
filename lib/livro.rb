@@ -1,11 +1,10 @@
 #coding: utf-8
 class Livro
   attr_accessor :preco
-  attr_reader :categoria
-  attr_reader :isbn
-  attr_reader :autor
+  attr_reader :categoria, :isbn, :titulo, :autor
 
-  def initialize(autor , isbn = "1", numero_de_paginas, preco, categoria)
+  def initialize(titulo, autor , isbn = "1", numero_de_paginas, preco, categoria)
+    @titulo = titulo
     @autor = autor
     @isbn = isbn
     @numero_de_paginas = numero_de_paginas

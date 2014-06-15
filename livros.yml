@@ -1,0 +1,8 @@
+--- !ruby/object:Livro
+titulo: TDD
+autor: Mauricio Aniche
+isbn: '123454'
+numero_de_paginas: 247
+preco: 69.9
+categoria: :testes
+
