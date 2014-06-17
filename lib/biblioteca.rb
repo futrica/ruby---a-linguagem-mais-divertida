@@ -1,23 +1,29 @@
 class Biblioteca
+  include Enumerable
+
   attr_reader :livros
   def initialize
     @banco_de_arquivos = BancoDeArquivos.new
   end
 
-  def adiciona(livro)
-    salva livro do
-      @livros << livro
-    end
+  def adiciona(midia)
+    salva midia do
+      midias << midia
+    end if midia.kind_of? Midia
   end
 
-  def livros
-    @livros ||= @banco_de_arquivos.carrega
+  def midias
+    @midias ||= @banco_de_arquivos.carrega
   end
 
-  def livros_por_categoria(categoria)
-    @livros.select { |livro| livro.categoria == categoria }
+  def midias_por_categoria(categoria)
+    midias.select { |midia| midia.categoria == categoria }
   end
 
+  def each
+    midias.each { |midia|  yield midia}
+
+  end
   private
 
   def salva(livro)
