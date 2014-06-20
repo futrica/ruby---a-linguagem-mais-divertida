@@ -51,7 +51,29 @@ module ActiveFile
 
     end
 
-  end
+    def method_missing(name, *args, &block)
+      field = name.to_s.split("_").last
+      super if @fields.include? field
+
+      load_all.select do |object|
+
+        object.send(field) == args.first
+      end
+    end
+
+    private
+
+    def load_all
+      Dir.glob('db/revistas/*.yml').map do |file|
+      deserialize file
+    end
+
+    def deserialize(file)
+      YAML.load File.open(file, "r")
+    end
+
+
+    end
 
   def self.included(base)
     base.extend ClassMethods
