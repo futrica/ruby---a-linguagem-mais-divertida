@@ -1,0 +1,13 @@
+#!/usr/bin/env rake
+
+require 'fileutils'
+
+desc "Limpa todas ocorrencias do DB"
+namespace :db do
+  task :clear do
+    FileUtils.rm Dir['db/revistas/*.yml']
+  end
+end
+
+
+

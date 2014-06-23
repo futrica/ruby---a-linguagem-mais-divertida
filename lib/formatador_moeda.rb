@@ -1,8 +1,8 @@
-module FormatadorMoeda
+require 'bundle/setup'
+require 'brnumeros'
 
-  def valor_formatado
-    "R$ #{@valor}"
-  end
+
+module FormatadorMoeda
 
   # Módulo que guarda os métodos de classe
   module ClassMethods
@@ -14,6 +14,12 @@ module FormatadorMoeda
           instance_variable_get("@#{name}")
           "R$ #{valor}"
         end
+
+        define_method("#{name}_por_extenso") do
+          valor = respond_to?(name) ? send(name)
+          : instance_variable_get("@#{name}")
+          valor.por_extenso_em_reais
+        end
       end
     end
   end
@@ -23,7 +29,7 @@ module FormatadorMoeda
   #classe_que_incluiu_modulo o objeto %%Class%% que
   #representa a classe que incluiu o módulo
   def self.included(classe_que_incluiu_modulo)
-    classe_que_incluiu_modulo.extend ClassMethods
+    base.extend ClassMethods
   end
 
 
