@@ -2,11 +2,31 @@
 
 require 'fileutils'
 
-desc "Limpa todas ocorrencias do DB"
 namespace :db do
+
+  desc "Limpa todas ocorrencias do DB"
   task :clear do
     FileUtils.rm Dir['db/revistas/*.yml']
   end
+
+  desc "Limpa todas os arquivos de uma midia"
+  task :clear, [:folder] do |task, args|
+    FileUtils.rm Dir["db/#{args.folder}/*.yml"]
+  end
+
+  desc "Popula com os dados definidos no arquivo db/folder/seeds.rb"
+  task :seed, [:folder] do
+    seed_file = File.expand_path "db/#{args.folder}/seeds.rb"
+    load(seed_file) if File.exist?(seed_file)
+  end
+
+  desc "Popula com os dados definidos no arquivo db/folder/seeds.rb, apagando os existentes"
+  task :reseed, [:folder] do
+    FileUtils.rm Dir["db/#{args.folder}/*.yml"]
+    seed_file = File.expand_path "db/#{args.folder}/seeds.rb"
+    load(seed_file) if File.exist?(seed_file)
+  end
+
 end
 
 
