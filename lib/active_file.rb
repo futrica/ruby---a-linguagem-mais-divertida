@@ -52,20 +52,33 @@ module ActiveFile
     end
 
     def method_missing(name, *args, &block)
-      field = name.to_s.split("_").last
+      super unless name.to_s =~ /^find_by_/
+
+      argument = args.first
+      field = $1
+
       super if @fields.include? field
 
       load_all.select do |object|
 
-        object.send(field) == args.first
+        shoud_select? object, field, argument
       end
     end
 
     private
 
+    def shoud_select?(object, field, argument)
+      if argument.kind_of? Regexp
+        object.send(field) =~ argument
+      else
+        object.send(field) == argument
+      end
+    end
+
     def load_all
       Dir.glob('db/revistas/*.yml').map do |file|
-      deserialize file
+        deserialize file
+      end
     end
 
     def deserialize(file)
@@ -73,7 +86,7 @@ module ActiveFile
     end
 
 
-    end
+  end
 
   def self.included(base)
     base.extend ClassMethods
